@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {BookModule} from './book/book.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -10,9 +11,9 @@ import {BookModule} from './book/book.module';
   ],
   imports: [
     BrowserModule,
-    BookModule
+    BookModule.forRoot(),
   ],
-  providers: [],
+  // providers: [BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
