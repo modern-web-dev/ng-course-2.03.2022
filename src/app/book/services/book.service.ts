@@ -39,4 +39,13 @@ export class BookService {
       subscriber.complete();
     });
   }
+
+  search(query: string): Observable<string[]> {
+    return new Observable(subscriber => {
+      setTimeout(() => {
+        subscriber.next([`${query} 1`, `${query} 2`, `${query} 3`]);
+        subscriber.complete();
+      }, 3000);
+    })
+  }
 }
