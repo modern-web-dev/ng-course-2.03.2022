@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Book} from '../../model';
+import {BookService} from '../../services/book.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ba-book-details',
@@ -8,11 +10,11 @@ import {Book} from '../../model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookDetailsComponent {
-  @Input()
   book: Book | undefined
 
-  @Output()
-  bookChange: EventEmitter<Book> = new EventEmitter<Book>();
+  constructor(private readonly books: BookService,
+              private readonly router: Router) {
+  }
 
   save(event: Event) {
     event.preventDefault();
@@ -20,11 +22,24 @@ export class BookDetailsComponent {
     const authorInput = formElement.querySelector<HTMLInputElement>('#author');
     const titleInput = formElement.querySelector<HTMLInputElement>('#title');
 
-    const savedBook: Book = {
-      id: this.book!.id,
-      author: authorInput?.value ?? '',
-      title: titleInput?.value ?? ''
+    if (this.book) {
+      const savedBook: Book = {
+        id: this.book.id,
+        author: authorInput?.value ?? '',
+        title: titleInput?.value ?? ''
+      }
+      this.books.update(savedBook)
+        .subscribe(() => this.goToBookOverview())
+    } else {
+      this.books.save(
+        {
+          author: authorInput?.value ?? '',
+          title: titleInput?.value ?? ''
+        }).subscribe(() => this.goToBookOverview())
     }
-    this.bookChange.emit(savedBook);
+  }
+
+  private goToBookOverview(): Promise<boolean> {
+    return this.router.navigateByUrl('/books');
   }
 }

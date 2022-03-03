@@ -4,6 +4,7 @@ import {BookDetailsComponent} from './components/book-details/book-details.compo
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookService} from './services/book.service';
 import {SharedModule} from '../shared/shared.module';
+import {BookResolver} from './components/book-details/book.resolver';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ export class BookModule {
   static forRoot(): ModuleWithProviders<BookModule> {
     return {
       ngModule: BookModule,
-      providers: [BookService]
+      providers: [BookService, BookResolver]
     }
   }
 }
