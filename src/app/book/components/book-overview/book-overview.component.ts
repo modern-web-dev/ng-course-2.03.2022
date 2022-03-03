@@ -1,27 +1,26 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
+import {Observable, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'ba-book-overview',
   templateUrl: './book-overview.component.html',
   styleUrls: ['./book-overview.component.scss']
 })
-export class BookOverviewComponent implements OnInit {
-  books: Book[] = [];
-  private readonly bookService: BookService;
-
-  constructor(injector: Injector) {
-    this.bookService = injector.get(BookService);
-  }
-
-  ngOnInit(): void {
-    this.bookService.findAll().then(
-      foundBooks => this.books = foundBooks
-    );
-  }
-
+export class BookOverviewComponent implements OnDestroy {
+  books$: Observable<Book[]>
   selectedBook: Book | null = null;
+  private readonly unsubscribe = new Subject<void>();
+
+  constructor(private readonly books: BookService) {
+    this.books$ = this.books.values$;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 
   selectBook(book: Book): void {
     this.selectedBook = book;
@@ -32,8 +31,11 @@ export class BookOverviewComponent implements OnInit {
   }
 
   updateBookOf(bookToUpdate: Book): void {
-    this.books = this.books.map(currentBook => currentBook.id === bookToUpdate.id ? bookToUpdate : currentBook);
-    this.selectedBook = bookToUpdate;
+    this.books.update(bookToUpdate)
+      .pipe(
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(
+        updatedBook => this.selectedBook = updatedBook);
   }
-
 }

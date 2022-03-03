@@ -1,11 +1,11 @@
 import {Book} from '../model';
-import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 // @Injectable({
 //   providedIn: 'root'
 // })
 export class BookService {
-  private books: Book[] = [
+  private readonly booksSubject$ = new BehaviorSubject<Book[]>([
     {
       id: 0,
       author: 'John Example',
@@ -21,16 +21,22 @@ export class BookService {
       author: 'Tom Hombergs',
       title: 'Hexagonal Architecture'
     }
-  ];
+  ]);
+  readonly values$ = this.booksSubject$.asObservable();
 
-  findAll(): Promise<Book[]> {
-    return new Promise<Book[]>(resolve => {
-      setTimeout(() => resolve(this.books), 3000);
-    })
+  findAll(): Observable<Book[]> {
+    return this.values$;
   }
 
-  save(book: Book): void {
-    this.books.push(book);
-
+  update(bookToUpdate: Book): Observable<Book> {
+    return new Observable<Book>(subscriber => {
+      const bookCopy = {...bookToUpdate};
+      const currentBooks = this.booksSubject$.getValue();
+      const newBooks = currentBooks.map(
+        currentBook => currentBook.id === bookCopy.id ? bookCopy : currentBook);
+      this.booksSubject$.next(newBooks);
+      subscriber.next(bookCopy);
+      subscriber.complete();
+    });
   }
 }
