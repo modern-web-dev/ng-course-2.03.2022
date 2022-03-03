@@ -66,7 +66,18 @@ describe('BookDetailsComponent', function () {
     })
 
     it('fires an event on button click', function () {
-      //
+      // 1. given
+      component.book = testBook;
+      componentFixture.detectChanges();
+      component.bookChange.subscribe(updatedBook => {
+        // 3. then
+        expect(updatedBook).toBeDefined();
+        expect(updatedBook.author).toBe(testBook.author);
+        expect(updatedBook.title).toBe(testBook.title);
+      })
+      // 2. when
+      const buttonElement = element.querySelector<HTMLButtonElement>('button');
+      buttonElement?.click();
     });
   });
 });
