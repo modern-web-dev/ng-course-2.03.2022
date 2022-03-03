@@ -16,6 +16,7 @@ import {BookResolver} from './book/components/book-details/book.resolver';
   imports: [
     BrowserModule,
     RouterModule.forRoot([
+      {path: '', redirectTo: '/books', pathMatch: 'full'},
       {
         path: 'books',
         component: BookOverviewComponent

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 
 @Component({
   selector: 'ba-book-details',
@@ -13,7 +13,9 @@ export class BookDetailsComponent {
   book: Book | undefined
 
   constructor(private readonly books: BookService,
-              private readonly router: Router) {
+              private readonly router: Router,
+              activatedRoute: ActivatedRoute) {
+    this.book = activatedRoute.snapshot.data['book'];
   }
 
   save(event: Event) {
