@@ -1,0 +1,29 @@
+{
+  "books": [
+    {
+      "id": 0,
+      "author": "John Exampleeeee",
+      "title": "Angular for nerds"
+    },
+    {
+      "id": 1,
+      "author": "Douglas Crockford",
+      "title": "JavaScript. The Good Parts"
+    },
+    {
+      "id": 2,
+      "author": "Tom Hombergs",
+      "title": "Hexagonal Architecture"
+    },
+    {
+      "id": 3,
+      "author": "Tom Hombergsss",
+      "title": "Hexagonal Architecture"
+    },
+    {
+      "author": "Tomasz Wawrzyniak",
+      "title": "Test",
+      "id": 4
+    }
+  ]
+}

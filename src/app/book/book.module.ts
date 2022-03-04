@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {HttpClientModule} from "@angular/common/http";
 import {BookDetailsComponent} from './components/book-details/book-details.component';
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookService} from './services/book.service';
@@ -12,7 +12,8 @@ import {BookResolver} from './components/book-details/book.resolver';
     BookOverviewComponent,
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    HttpClientModule,
   ],
   exports: [
     BookOverviewComponent

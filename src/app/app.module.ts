@@ -8,6 +8,8 @@ import {BookOverviewComponent} from './book/components/book-overview/book-overvi
 import {BookDetailsComponent} from './book/components/book-details/book-details.component';
 import {SharedModule} from './shared/shared.module';
 import {BookResolver} from './book/components/book-details/book.resolver';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {JWTInterceptorInterceptor} from "./jwtinterceptor.interceptor";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,9 @@ import {BookResolver} from './book/components/book-details/book.resolver';
     ]),
     BookModule.forRoot(),
     SharedModule
+  ],
+  providers:[
+    {provide: HTTP_INTERCEPTORS, useClass: JWTInterceptorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

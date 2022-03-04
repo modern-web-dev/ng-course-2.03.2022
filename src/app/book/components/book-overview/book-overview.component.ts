@@ -16,7 +16,7 @@ export class BookOverviewComponent {
   constructor(
     private readonly books: BookService,
     private readonly router: Router) {
-    this.books$ = this.books.values$;
+    this.books$ = this.books.findAll();
   }
 
   ngOnDestroy(): void {

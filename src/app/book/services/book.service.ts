@@ -1,63 +1,34 @@
-import {Book, BookProperties} from '../model';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Injectable} from "@angular/core";
 
+import {Book, BookProperties} from '../model';
+
+@Injectable()
 export class BookService {
-  private idSeq = 0;
-  private readonly booksSubject$ = new BehaviorSubject<Book[]>([
-    {
-      id: this.idSeq++,
-      author: 'John Example',
-      title: 'Angular for nerds'
-    },
-    {
-      id: this.idSeq++,
-      author: 'Douglas Crockford',
-      title: 'JavaScript. The Good Parts'
-    },
-    {
-      id: this.idSeq++,
-      author: 'Tom Hombergs',
-      title: 'Hexagonal Architecture'
-    }
-  ]);
-  readonly values$ = this.booksSubject$.asObservable();
+  API_URL = '/api/books';
+
+  constructor(private readonly http: HttpClient) {
+
+  }
 
   findAll(): Observable<Book[]> {
-    return this.values$;
+    return this.http.get<Book[]>(this.API_URL);
   }
 
   update(bookToUpdate: Book): Observable<Book> {
-    return new Observable<Book>(subscriber => {
-      const bookCopy = {...bookToUpdate};
-      const currentBooks = this.booksSubject$.getValue();
-      const newBooks = currentBooks.map(
-        currentBook => currentBook.id === bookCopy.id ? bookCopy : currentBook);
-      this.booksSubject$.next(newBooks);
-      subscriber.next(bookCopy);
-      subscriber.complete();
-    });
+    return this.http.put<Book>(`${this.API_URL}/${bookToUpdate.id}`, bookToUpdate);
   }
 
   save(newBookProps: BookProperties): Observable<Book> {
-    return new Observable<Book>(subscriber => {
-      const newBook = {...newBookProps, id: this.idSeq++};
-      const currentBooks = this.booksSubject$.getValue();
-      this.booksSubject$.next([...currentBooks, newBook]);
-      subscriber.next(newBook);
-      subscriber.complete();
-    })
+    return this.http.post<Book>(this.API_URL, newBookProps);
   }
 
   find(id: number): Observable<Book> {
-    return new Observable(subscriber => {
-      const currentBooks = this.booksSubject$.getValue();
-      const foundBook = currentBooks.find(currentBook => currentBook.id === id);
-      if(foundBook) {
-        subscriber.next(foundBook);
-        subscriber.complete();
-      } else {
-        subscriber.error(`Book with ID ${id} could not be found!`);
-      }
-    });
+    const searchcriteria = {id};
+    const params = new HttpParams({fromObject: searchcriteria});
+
+    return this.http.get<Book[]>(`${this.API_URL}`, {params})
+      .pipe(map(list => list[0]));
   }
 }
