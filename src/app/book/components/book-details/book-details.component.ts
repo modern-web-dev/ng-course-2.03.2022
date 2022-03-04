@@ -53,6 +53,9 @@ export class BookDetailsComponent {
     }
   }
 
+  get datapersisted(): boolean{
+   return this.bookForm.pristine;
+  }
   private goToBookOverview(): Promise<boolean> {
     return this.router.navigateByUrl('/books');
   }

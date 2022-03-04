@@ -7,6 +7,4 @@ import {BookService} from './book/services/book.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private readonly bookService: BookService) {
-  }
 }

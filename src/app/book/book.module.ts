@@ -7,6 +7,9 @@ import {BookOverviewComponent} from './components/book-overview/book-overview.co
 import {BookService} from './services/book.service';
 import {SharedModule} from '../shared/shared.module';
 import {BookResolver} from './components/book-details/book.resolver';
+import {RouterModule} from "@angular/router";
+import {NotPersistedDataGuardGuard} from "../shared/not-persisted-data-guard.guard";
+
 
 @NgModule({
   declarations: [
@@ -16,17 +19,29 @@ import {BookResolver} from './components/book-details/book.resolver';
   imports: [
     SharedModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: BookOverviewComponent
+      },
+      {
+        path: 'new',
+        component: BookDetailsComponent,
+        canDeactivate: [NotPersistedDataGuardGuard]
+      },
+      {
+        path: ':id',
+        component: BookDetailsComponent,
+        canDeactivate: [NotPersistedDataGuardGuard],
+        resolve: {
+          book: BookResolver
+        }
+      }
+    ]),
   ],
-  exports: [
-    BookOverviewComponent
-  ],
+  providers: [BookService, BookResolver]
 })
 export class BookModule {
-  static forRoot(): ModuleWithProviders<BookModule> {
-    return {
-      ngModule: BookModule,
-      providers: [BookService, BookResolver]
-    }
-  }
+
 }
