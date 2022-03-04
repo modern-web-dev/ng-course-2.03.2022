@@ -1,5 +1,7 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {HttpClientModule} from "@angular/common/http";
+import {ReactiveFormsModule} from "@angular/forms";
+
 import {BookDetailsComponent} from './components/book-details/book-details.component';
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookService} from './services/book.service';
@@ -14,6 +16,7 @@ import {BookResolver} from './components/book-details/book.resolver';
   imports: [
     SharedModule,
     HttpClientModule,
+    ReactiveFormsModule
   ],
   exports: [
     BookOverviewComponent

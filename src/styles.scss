@@ -2,3 +2,7 @@
 $enable-rounded: false;
 $primary: #2b0a3d;
 @import "~bootstrap/scss/bootstrap";
+
+input.ng-invalid{
+  @extend .is-invalid;
+}
