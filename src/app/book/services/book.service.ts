@@ -31,4 +31,11 @@ export class BookService {
     return this.http.get<Book[]>(`${this.API_URL}`, {params})
       .pipe(map(list => list[0]));
   }
+
+  search(text: string): Observable<Book[]> {
+    const searchcriteria = {q:text};
+    const params = new HttpParams({fromObject: searchcriteria});
+
+    return this.http.get<Book[]>(`${this.API_URL}`, {params});
+  }
 }
