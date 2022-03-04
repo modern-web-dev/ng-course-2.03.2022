@@ -2,28 +2,43 @@
   "books": [
     {
       "id": 0,
-      "author": "John Exampleeeee",
-      "title": "Angular for nerds"
+      "author": {
+        "firstName": "Felipe",
+        "lastName": "Couryyy"
+      },
+      "title": "ng-book: The Complete Guide to Angular",
+      "publishDate": "2018",
+      "details": {
+        "pages": 626
+      }
     },
     {
       "id": 1,
-      "author": "Douglas Crockford",
-      "title": "JavaScript. The Good Parts"
+      "author": {
+        "firstName": "Douglas",
+        "lastName": "Crockford"
+      },
+      "title": "JavaScript. The Good Parts",
+      "publishDate": "2008",
+      "details": {
+        "pages": "180",
+        "language": "English",
+        "cover": "soft"
+      }
     },
     {
       "id": 2,
-      "author": "Tom Hombergs",
-      "title": "Hexagonal Architecture"
-    },
-    {
-      "id": 3,
-      "author": "Tom Hombergsss",
-      "title": "Hexagonal Architecture"
-    },
-    {
-      "author": "Tomasz Wawrzyniak",
-      "title": "Test",
-      "id": 4
+      "title": "TypeScript Quickly",
+      "author": {
+        "firstName": "Yakov",
+        "lastName": "Fain"
+      },
+      "details": {
+        "pages": 520,
+        "language": "English",
+        "cover": "soft"
+      },
+      "publishDate": "2020"
     }
   ]
 }

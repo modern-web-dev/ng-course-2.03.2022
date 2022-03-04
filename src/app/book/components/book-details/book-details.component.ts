@@ -1,49 +1,42 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {minLength} from "./validators/min-length.validator";
+import {BookDetailsFormService} from "./book-details-form.service";
+import {FormControl} from "@angular/forms";
 
 
 @Component({
   selector: 'ba-book-details',
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [BookDetailsFormService]
 })
 export class BookDetailsComponent {
-
   bookForm;
 
   book: Book | undefined
 
   constructor(private readonly books: BookService,
               private readonly router: Router,
-              private readonly fb: FormBuilder,
+              private readonly bookDetailsFormService: BookDetailsFormService,
               activatedRoute: ActivatedRoute) {
     this.book = activatedRoute.snapshot.data['book'];
-    this.bookForm = this.prepareForm(this.book || {id: undefined, author: '', title: ''});
+    this.bookForm = this.bookDetailsFormService.prepareForm(this.book || {} as any);
 
   }
+
 
   get authorControl(): FormControl {
-    return this.bookForm.get('author') as FormControl;
+    return this.bookForm.get('author.firstname') as FormControl;
   }
+  //
+  // get titleControl(): FormControl {
+  //   return this.bookForm.get('title') as FormControl;
+  // }
 
-  get titleControl(): FormControl {
-    return this.bookForm.get('title') as FormControl;
-  }
-
-  prepareForm(book: Book) {
-    const form = this.fb.group({
-      id: [{value: book.id, disabled: true}],
-      author: [book.author, [Validators.required, minLength(5)]],
-      title: [book?.title, [Validators.required, minLength(5)]],
-    });
-
-    return form;
-  }
 
   save() {
     this.bookForm.value

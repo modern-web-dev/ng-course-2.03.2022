@@ -1,22 +1,16 @@
 export interface Book {
-  id: number|undefined;
-  author: string;
+  id: number;
+  author: Author;
+  details: BookDetails;
   title: string;
+  publishDate: string;
+}
+export interface BookDetails{
+  pages: number;
 }
 
-
-// export interface Book {
-//   id: number;
-//   author: Author;
-//   details: BookDetails;
-//   title: string;
-// }
-// export interface BookDetails{
-//   pages: number;
-// }
-//
-// export interface Author {
-//   firstname:string
-//   lastname:string
-// }
+export interface Author {
+  firstName:string
+  lastName:string
+}
 export type BookProperties = Omit<Book, "id">;

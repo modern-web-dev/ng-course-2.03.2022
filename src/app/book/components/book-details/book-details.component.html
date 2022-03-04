@@ -1,22 +1,43 @@
-<form [formGroup]="bookForm">
-  <div class="mb-3">
-    <label class="form-label"
-           for="author">Author:</label>
-    <input class="form-control" formControlName="author" id="author">
-    <ba-validation-feedback [of]="authorControl"></ba-validation-feedback>
-  </div>
+<form [formGroup]="bookForm" #formGroupDirective="ngForm">
+  <ng-container formGroupName="author">
+    <div class="mb-3">
+      <div *ngIf="formGroupDirective.submitted"> Submitted! </div>
+      <label class="form-label"
+             for="firstname">Firstname:</label>
+      <input class="form-control" formControlName="firstName" id="firstname">
+      <ba-validation-feedback [of]="authorControl"></ba-validation-feedback>
+    </div>
+    <div class="mb-3">
+      <label class="form-label"
+             for="lastname">Lastname:</label>
+      <input class="form-control" formControlName="lastName" id="lastname">
+<!--      <ba-validation-feedback [of]="authorControl"></ba-validation-feedback>-->
+    </div>
+  </ng-container>
   <div class="mb-3">
     <label class="form-label"
            for="title">Title:</label>
     <input class="form-control" formControlName="title" id="title">
-    <ba-validation-feedback [of]="titleControl"></ba-validation-feedback>
+<!--    <ba-validation-feedback [of]="titleControl"></ba-validation-feedback>-->
   </div>
+  <div class="mb-3">
+    <label class="form-label"
+           for="lastname">PublishDate:</label>
+    <input class="form-control" formControlName="publishDate" id="publishDate">
+<!--    <ba-validation-feedback [of]="authorControl"></ba-validation-feedback>-->
+  </div>
+  <ng-container formGroupName="details">
+    <div class="mb-3">
+      <label class="form-label"
+             for="firstname">Pages:</label>
+      <input class="form-control" formControlName="pages" id="pages">
+<!--      <ba-validation-feedback [of]="authorControl"></ba-validation-feedback>-->
+    </div>
+
+  </ng-container>
   <pre>
     {{bookForm.value | json}}
-
-    {{bookForm.getRawValue() | json}}
-
-    {{authorControl?.errors | json}}
   </pre>
-  <button (click)="save()" [disabled]="bookForm.invalid" class="btn btn-primary">Save</button>
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="reset" class="btn secondary">reset</button>
 </form>
